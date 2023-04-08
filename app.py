@@ -1,3 +1,26 @@
+AMINOACID_CODES = [
+    "A",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "K",
+    "L",
+    "M",
+    "N",
+    "P",
+    "Q",
+    "R",
+    "S",
+    "T",
+    "V",
+    "W",
+    "Y",
+]
+
 BLOSUM62 = {
     ("W", "F"): 1,
     ("L", "R"): -2,
@@ -277,15 +300,7 @@ BLOSUM62 = {
     ("B", "B"): 4,
 }
 
-
-# def maximo(c1, c2, cima, esquerdo, diagonal):
-#     if c1 == c2 and (diagonal + 1) >= cima and (diagonal + 1) >= esquerdo:
-#         diagonal = diagonal + 1
-#         return diagonal
-#     elif esquerdo >= cima and esquerdo >= diagonal:
-#         return esquerdo
-#     else:
-#         return cima
+PENALTY = 0
 
 
 def score(s1, s2):
@@ -295,16 +310,16 @@ def score(s1, s2):
         return BLOSUM62[(s2, s1)]
 
 
-def ponteiro(c1, c2, cima, esquerdo, diagonal):
-    if c1 == c2 and (diagonal + 1) >= cima and (diagonal + 1) >= esquerdo:
-        return "\\"
-    elif esquerdo >= cima and esquerdo >= diagonal:
-        return "_"
-    else:
+def traceback(positions):
+    if positions.index(max(positions)) == 0:
         return "|"
+    elif positions.index(max(positions)) == 1:
+        return "_"
+    elif positions.index(max(positions)) == 2:
+        return "\\"
 
 
-def imprimeMatriz(v, w, pontuacao, ponteiros):
+def printMatrix(v, w, scoreMatrix, tracebackMatrix):
     print("\t", end="")
     for j in range(0, len(v)):
         print(v[j], end="\t")
@@ -312,23 +327,23 @@ def imprimeMatriz(v, w, pontuacao, ponteiros):
     for i in range(0, len(w)):
         print(w[i], end="\t")
         for j in range(0, len(v)):
-            print(pontuacao[i][j], ponteiros[i][j], end="\t", sep="")
+            print(scoreMatrix[i][j], tracebackMatrix[i][j], end="\t", sep="")
         print()
     print()
 
 
-def geraAlinhamento(v, w, pontuacao, ponteiros):
+def geraAlinhamento(v, w, scoreMatrix, tracebackMatrix):
     ali_v = ""
     ali_w = ""
     i = len(w) - 1
     j = len(v) - 1
     while (i != 0) or (j != 0):
-        if ponteiros[i][j] == "\\":
+        if tracebackMatrix[i][j] == "\\":
             ali_v = v[j] + ali_v
             ali_w = w[i] + ali_w
             i -= 1
             j -= 1
-        elif ponteiros[i][j] == "_":
+        elif tracebackMatrix[i][j] == "_":
             ali_v = v[j] + ali_v
             ali_w = "_" + ali_w
             j -= 1
@@ -336,54 +351,82 @@ def geraAlinhamento(v, w, pontuacao, ponteiros):
             ali_v = "_" + ali_v
             ali_w = w[i] + ali_w
             i -= 1
-    print(pontuacao[len(w) - 1][len(v) - 1])
+    print(scoreMatrix[len(w) - 1][len(v) - 1])
     print(ali_v)
     print(ali_w)
 
 
-def lcs(v, w):
-    pontuacao = []
-    ponteiros = []
-    pontuacao = [0] * len(v)
-    ponteiros = [""] * len(v)
+def needlemanWunsch(firstSequence, secondSequence):
+    scoreMatrix = []
+    tracebackMatrix = []
+    scoreMatrix = [0] * len(firstSequence)
+    tracebackMatrix = [""] * len(firstSequence)
 
     # inicializa matriz de pontos e ponteiros com zeros e espaços
-    for i in range(0, len(w)):
-        pontuacao[i] = [0] * len(v)
-        ponteiros[i] = [""] * len(v)
+    for i in range(0, len(secondSequence)):
+        scoreMatrix[i] = [0] * len(firstSequence)
+        tracebackMatrix[i] = [""] * len(firstSequence)
 
     # inicializa a primeira coluna da matriz com barras
-    for i in range(0, len(w)):
-        ponteiros[i][0] = "|"
+    for i in range(0, len(secondSequence)):
+        tracebackMatrix[i][0] = "|"
 
     # inicializa a primeira linha da matriz com underscore
-    for j in range(0, len(v)):
-        ponteiros[0][j] = "_"
+    for j in range(0, len(firstSequence)):
+        tracebackMatrix[0][j] = "_"
 
-    for i in range(1, len(w)):  # i = linha
-        for j in range(1, len(v)):  # j = coluna
+    for i in range(1, len(secondSequence)):  # i = linha
+        for j in range(1, len(firstSequence)):  # j = coluna
+            s1 = firstSequence[j]
+            s2 = secondSequence[i]
 
-            s1 = v[j]
-            s2 = w[i]
+            cima = scoreMatrix[i - 1][j] + PENALTY
+            esquerdo = scoreMatrix[i][j - 1] + PENALTY
+            diagonal = scoreMatrix[i - 1][j - 1] + score(s1, s2)
 
-            cima = pontuacao[i - 1][j]
-            esquerdo = pontuacao[i][j - 1]
-            diagonal = pontuacao[i - 1][j - 1] + score(s1, s2)
+            positions = [cima, esquerdo, diagonal]
 
-            pontuacao[i][j] = max([cima, esquerdo, diagonal])
-            ponteiros[i][j] = ponteiro(s1, s2, cima, esquerdo, diagonal)
+            scoreMatrix[i][j] = max(positions)
+            tracebackMatrix[i][j] = traceback(positions)
 
-    imprimeMatriz(v, w, pontuacao, ponteiros)
-    geraAlinhamento(v, w, pontuacao, ponteiros)
+    printMatrix(firstSequence, secondSequence, scoreMatrix, tracebackMatrix)
+    geraAlinhamento(firstSequence, secondSequence, scoreMatrix, tracebackMatrix)
 
 
-# PROGRAMA PRINCIPAL:
-# v = ['*', 'A', 'T', 'C', 'G', 'T', 'A', 'C']
-# w = ['*', 'A', 'T', 'G', 'T', 'T', 'A', 'T']
+def validateSequence(sequence):
+    for i in sequence:
+        if i not in AMINOACID_CODES:
+            return False
 
-v = ["*", "D", "R", "Q", "T"]
-w = ["*", "D", "R", "Q", "T"]
+    return True
 
-# v = ['*', "D","R","Q","T","A","Q","A","A","G","T","T","T","I","T"]
-# w = ['*', "D","R","N","T","A","Q","L","L","G","T","D","T","T"]
-lcs(v, w)
+
+def inputSequence(sequenceNumber):
+    isInvalidSequence = False
+
+    while isInvalidSequence == False:
+        sequence = input(f"Digite a {sequenceNumber} º sequência: ").upper()
+        isInvalidSequence = validateSequence(sequence)
+
+        if isInvalidSequence == False:
+            print("\nSequência inválida. Por favor, Informe uma sequência válida")
+        else:
+            return sequence
+
+
+def menu():
+    print("\nImplementação do Algoritmo de Needleman-Wunsch com Matrix BLOSUM62")
+
+    firstSequence = inputSequence(1)
+    secondSequence = inputSequence(2)
+
+    # v = ["*", "D", "R", "Q", "T"]
+    # w = ["*", "D", "R", "Q", "T"]
+
+    firstSequence = ["*"] + list(firstSequence)
+    secondSequence = ["*"] + list(secondSequence)
+
+    needlemanWunsch(firstSequence, secondSequence)
+
+
+menu()
