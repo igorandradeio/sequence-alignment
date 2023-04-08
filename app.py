@@ -278,14 +278,21 @@ BLOSUM62 = {
 }
 
 
-def maximo(c1, c2, cima, esquerdo, diagonal):
-    if c1 == c2 and (diagonal + 1) >= cima and (diagonal + 1) >= esquerdo:
-        diagonal = diagonal + 1
-        return diagonal
-    elif esquerdo >= cima and esquerdo >= diagonal:
-        return esquerdo
+# def maximo(c1, c2, cima, esquerdo, diagonal):
+#     if c1 == c2 and (diagonal + 1) >= cima and (diagonal + 1) >= esquerdo:
+#         diagonal = diagonal + 1
+#         return diagonal
+#     elif esquerdo >= cima and esquerdo >= diagonal:
+#         return esquerdo
+#     else:
+#         return cima
+
+
+def score(s1, s2):
+    if (s1, s2) in BLOSUM62:
+        return BLOSUM62[(s1, s2)]
     else:
-        return cima
+        return BLOSUM62[(s2, s1)]
 
 
 def ponteiro(c1, c2, cima, esquerdo, diagonal):
@@ -355,13 +362,16 @@ def lcs(v, w):
 
     for i in range(1, len(w)):  # i = linha
         for j in range(1, len(v)):  # j = coluna
+
+            s1 = v[j]
+            s2 = w[i]
+
             cima = pontuacao[i - 1][j]
             esquerdo = pontuacao[i][j - 1]
-            diagonal = pontuacao[i - 1][j - 1]
-            c1 = v[j]
-            c2 = w[i]
-            pontuacao[i][j] = maximo(c1, c2, cima, esquerdo, diagonal)
-            ponteiros[i][j] = ponteiro(c1, c2, cima, esquerdo, diagonal)
+            diagonal = pontuacao[i - 1][j - 1] + score(s1, s2)
+
+            pontuacao[i][j] = max([cima, esquerdo, diagonal])
+            ponteiros[i][j] = ponteiro(s1, s2, cima, esquerdo, diagonal)
 
     imprimeMatriz(v, w, pontuacao, ponteiros)
     geraAlinhamento(v, w, pontuacao, ponteiros)
@@ -371,8 +381,8 @@ def lcs(v, w):
 # v = ['*', 'A', 'T', 'C', 'G', 'T', 'A', 'C']
 # w = ['*', 'A', 'T', 'G', 'T', 'T', 'A', 'T']
 
-v = ["*", "D", "R", "Q"]
-w = ["*", "D", "R", "Q"]
+v = ["*", "D", "R", "Q", "T"]
+w = ["*", "D", "R", "Q", "T"]
 
 # v = ['*', "D","R","Q","T","A","Q","A","A","G","T","T","T","I","T"]
 # w = ['*', "D","R","N","T","A","Q","L","L","G","T","D","T","T"]
