@@ -311,49 +311,57 @@ def score(s1, s2):
 
 
 def traceback(positions):
-    if positions.index(max(positions)) == 0:
-        return "|"
-    elif positions.index(max(positions)) == 1:
-        return "_"
-    elif positions.index(max(positions)) == 2:
+    maximum = max(positions)
+
+    # diagonal
+    if positions.index(maximum) == 0:
         return "\\"
+    # esquerda
+    elif positions.index(maximum) == 1:
+        return "_"
+    # cima
+    elif positions.index(maximum) == 2:
+        return "|"
 
 
-def printMatrix(v, w, scoreMatrix, tracebackMatrix):
+def printMatrix(firstSequence, secondSequence, scoreMatrix, tracebackMatrix):
     print("\t", end="")
-    for j in range(0, len(v)):
-        print(v[j], end="\t")
+    for j in range(0, len(firstSequence)):
+        print(firstSequence[j], end="\t")
     print()
-    for i in range(0, len(w)):
-        print(w[i], end="\t")
-        for j in range(0, len(v)):
-            print(scoreMatrix[i][j], tracebackMatrix[i][j], end="\t", sep="")
+    for i in range(0, len(secondSequence)):
+        print(secondSequence[i], end="\t")
+        for j in range(0, len(firstSequence)):
+            print(scoreMatrix[i][j]4. Alinhe pares de sequências reais como as fornecidas no arquivo suplementar a esse, tracebackMatrix[i][j], end="\t", sep="")
         print()
     print()
 
 
-def geraAlinhamento(v, w, scoreMatrix, tracebackMatrix):
-    ali_v = ""
-    ali_w = ""
-    i = len(w) - 1
-    j = len(v) - 1
+def alignment(firstSequence, secondSequence, scoreMatrix, tracebackMatrix):
+    ali_first = ""
+    ali_second = ""
+    i = len(secondSequence) - 1
+    j = len(firstSequence) - 1
     while (i != 0) or (j != 0):
         if tracebackMatrix[i][j] == "\\":
-            ali_v = v[j] + ali_v
-            ali_w = w[i] + ali_w
+            ali_first = firstSequence[j] + ali_first
+            ali_second = secondSequence[i] + ali_second
             i -= 1
             j -= 1
         elif tracebackMatrix[i][j] == "_":
-            ali_v = v[j] + ali_v
-            ali_w = "_" + ali_w
+            ali_first = firstSequence[j] + ali_first
+            ali_second = "_" + ali_second
             j -= 1
-        else:
-            ali_v = "_" + ali_v
-            ali_w = w[i] + ali_w
+        elif tracebackMatrix[i][j] == "|":
+            ali_first = "_" + ali_first
+            ali_second = secondSequence[i] + ali_second
             i -= 1
-    print(scoreMatrix[len(w) - 1][len(v) - 1])
-    print(ali_v)
-    print(ali_w)
+    print(
+        "Pontuação do melhor alinhamento: ",
+        scoreMatrix[len(secondSequence) - 1][len(firstSequence) - 1],
+    )
+    print(ali_first)
+    print(ali_second)
 
 
 def needlemanWunsch(firstSequence, secondSequence):
@@ -384,13 +392,13 @@ def needlemanWunsch(firstSequence, secondSequence):
             esquerdo = scoreMatrix[i][j - 1] + PENALTY
             diagonal = scoreMatrix[i - 1][j - 1] + score(s1, s2)
 
-            positions = [cima, esquerdo, diagonal]
+            positions = [diagonal, esquerdo, cima]
 
             scoreMatrix[i][j] = max(positions)
             tracebackMatrix[i][j] = traceback(positions)
 
     printMatrix(firstSequence, secondSequence, scoreMatrix, tracebackMatrix)
-    geraAlinhamento(firstSequence, secondSequence, scoreMatrix, tracebackMatrix)
+    alignment(firstSequence, secondSequence, scoreMatrix, tracebackMatrix)
 
 
 def validateSequence(sequence):
@@ -405,7 +413,7 @@ def inputSequence(sequenceNumber):
     isInvalidSequence = False
 
     while isInvalidSequence == False:
-        sequence = input(f"Digite a {sequenceNumber} º sequência: ").upper()
+        sequence = input(f"Digite a {sequenceNumber} sequência: ").upper()
         isInvalidSequence = validateSequence(sequence)
 
         if isInvalidSequence == False:
@@ -417,11 +425,8 @@ def inputSequence(sequenceNumber):
 def menu():
     print("\nImplementação do Algoritmo de Needleman-Wunsch com Matrix BLOSUM62")
 
-    firstSequence = inputSequence(1)
-    secondSequence = inputSequence(2)
-
-    # v = ["*", "D", "R", "Q", "T"]
-    # w = ["*", "D", "R", "Q", "T"]
+    firstSequence = inputSequence("primeira")
+    secondSequence = inputSequence("segunda")
 
     firstSequence = ["*"] + list(firstSequence)
     secondSequence = ["*"] + list(secondSequence)
