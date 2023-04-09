@@ -332,7 +332,7 @@ def printMatrix(firstSequence, secondSequence, scoreMatrix, tracebackMatrix):
     for i in range(0, len(secondSequence)):
         print(secondSequence[i], end="\t")
         for j in range(0, len(firstSequence)):
-            print(scoreMatrix[i][j]4. Alinhe pares de sequências reais como as fornecidas no arquivo suplementar a esse, tracebackMatrix[i][j], end="\t", sep="")
+            print(scoreMatrix[i][j], tracebackMatrix[i][j], end="\t", sep="")
         print()
     print()
 
