@@ -300,8 +300,6 @@ BLOSUM62 = {
     ("B", "B"): 4,
 }
 
-PENALTY = 0
-
 
 def score(s1, s2):
     if (s1, s2) in BLOSUM62:
@@ -388,8 +386,8 @@ def needlemanWunsch(firstSequence, secondSequence):
             s1 = firstSequence[j]
             s2 = secondSequence[i]
 
-            cima = scoreMatrix[i - 1][j] + PENALTY
-            esquerdo = scoreMatrix[i][j - 1] + PENALTY
+            cima = scoreMatrix[i - 1][j]
+            esquerdo = scoreMatrix[i][j - 1]
             diagonal = scoreMatrix[i - 1][j - 1] + score(s1, s2)
 
             positions = [diagonal, esquerdo, cima]
