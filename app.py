@@ -523,7 +523,7 @@ def menu():
     elif option == 2:
         customAlignment()
     else:
-        print(option, "teste")
+        print("Saindo... ")
         return False
 
 
