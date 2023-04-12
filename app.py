@@ -420,8 +420,11 @@ def inputSequence(sequenceNumber):
             return sequence
 
 
-def menu():
-    print("\nImplementação do Algoritmo de Needleman-Wunsch com Matrix BLOSUM62")
+def customAlignment():
+    print("\n######################################################################")
+    print("\n#                  ALINHAMENTO DE SEQUÊNCIAS                         #")
+    print("\n#                  Informe as sequências abaixo                      #")
+    print("\n######################################################################")
 
     firstSequence = inputSequence("primeira")
     secondSequence = inputSequence("segunda")
@@ -430,6 +433,91 @@ def menu():
     secondSequence = ["*"] + list(secondSequence)
 
     needlemanWunsch(firstSequence, secondSequence)
+
+def exercise1():
+    print("\n###########################################################################")
+    print("\n#                          EXERCÍCIO 1                                    #")
+    print("\n# Tente alinhar sequências idênticas e bem pequenas como DRQT por exemplo #")
+    print("\n#-------------------------------------------------------------------------#")
+    print("\n#                          RESPOSTA EXERCÍCIO 1:                          #")
+    print("\n#-------------------------------------------------------------------------#")
+
+    firstSequence = ["*", "D", "R", "Q", "T"] 
+    secondSequence = ["*", "D", "R", "Q", "T"] 
+
+    needlemanWunsch(firstSequence, secondSequence)
+
+    print("\n#-----------------------------FIM EXERCÍCIO 1-----------------------------#")
+
+def exercise2():
+    print("\n##############################################################################################")
+    print("\n#                          EXERCÍCIO 2                                                       #")
+    print("\n# Faça pequenas alterações na sequência substituindo uma glutamina (Q) por um glutamato (E). #")
+    print("\n#--------------------------------------------------------------------------------------------#")
+    print("\n#                          RESPOSTA EXERCÍCIO 2:                                             #")
+    print("\n#--------------------------------------------------------------------------------------------#")
+
+    firstSequence = ["*", "D", "R", "Q", "T"] 
+    secondSequence = ["*", "D", "R", "E", "T"] 
+
+    needlemanWunsch(firstSequence, secondSequence)
+
+    print("\n#-----------------------------FIM EXERCÍCIO 2-----------------------------#")
+
+
+def exercise3():
+    print("\n#######################################################################################################")
+    print("\n#                          EXERCÍCIO 3                                                                #")
+    print("\n# Alinhe sequências um pouco maiores e de comprimentos diferentes como DRQTAQAAGTTTIT e DRNTAQLLGTDTT #")
+    print("\n#-----------------------------------------------------------------------------------------------------#")
+    print("\n#                          RESPOSTA EXERCÍCIO 3:                                                      #")
+    print("\n#-----------------------------------------------------------------------------------------------------#")
+
+    firstSequence = ["*", "D","R","Q","T","A","Q","A","A","G","T","T","T","I","T"] 
+    secondSequence = ["*", "D","R","N","T","A","Q","L","L","G","T","D","T","T"] 
+
+    needlemanWunsch(firstSequence, secondSequence)
+
+    print("\n#-----------------------------FIM EXERCÍCIO 3---------------------------------------------------------#")
+
+def exercise4():
+    print("\n#######################################################################################################")
+    print("\n#                          EXERCÍCIO 4                                                                #")
+    print("\n# Alinhe pares de sequências do SARS-CoV-2 e de outros vírus.                                         #")
+    print("\n#-----------------------------------------------------------------------------------------------------#")
+    print("\n#                          RESPOSTA EXERCÍCIO 4:                                                      #")
+    print("\n#-----------------------------------------------------------------------------------------------------#")
+
+    coronavirus2 = list()
+    coronavirus1 = list() 
+    firstSequence = ["*"] + list(firstSequence)
+    secondSequence = ["*"] + list(secondSequence)
+
+    needlemanWunsch(firstSequence, secondSequence)
+
+    print("\n#-----------------------------FIM EXERCÍCIO 3---------------------------------------------------------#")
+
+def menu():
+    print("\n######################################################################")
+    print("\n#                                                                    #")
+    print("\n#Implementação do Algoritmo de Needleman-Wunsch com Matrix BLOSUM62  #")
+    print("\n#                           MENU                                     #")
+    print("\n# Opção 1 : Resolver exercícios                                      #")
+    print("\n# Opção 2 : Alinhar própria sequência                                #")
+    print("\n# Opção 3 : Sair                                                     #")
+    print("\n######################################################################")
+
+    option = int(input("Digite a opção desejada: "))
+
+    if option == 1:
+        exercise1()
+        exercise2()
+        exercise3()
+    elif option == 2:
+        customAlignment()
+    else:
+        print(option, "teste")
+        return False
 
 
 menu()
