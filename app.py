@@ -358,7 +358,9 @@ def alignment(firstSequence, secondSequence, scoreMatrix, tracebackMatrix):
         "Pontuação do melhor alinhamento: ",
         scoreMatrix[len(secondSequence) - 1][len(firstSequence) - 1],
     )
+    print("\n Sequência 1:")
     print(ali_first)
+    print("\n Sequência 2:")
     print(ali_second)
 
 
@@ -442,8 +444,8 @@ def exercise1():
     print("\n#                          RESPOSTA EXERCÍCIO 1:                          #")
     print("\n#-------------------------------------------------------------------------#")
 
-    firstSequence = ["*", "D", "R", "Q", "T"] 
-    secondSequence = ["*", "D", "R", "Q", "T"] 
+    firstSequence = ["*", "D", "R", "Q", "T"]
+    secondSequence = ["*", "D", "R", "Q", "T"]
 
     needlemanWunsch(firstSequence, secondSequence)
 
@@ -457,8 +459,8 @@ def exercise2():
     print("\n#                          RESPOSTA EXERCÍCIO 2:                                             #")
     print("\n#--------------------------------------------------------------------------------------------#")
 
-    firstSequence = ["*", "D", "R", "Q", "T"] 
-    secondSequence = ["*", "D", "R", "E", "T"] 
+    firstSequence = ["*", "D", "R", "Q", "T"]
+    secondSequence = ["*", "D", "R", "E", "T"]
 
     needlemanWunsch(firstSequence, secondSequence)
 
@@ -473,8 +475,8 @@ def exercise3():
     print("\n#                          RESPOSTA EXERCÍCIO 3:                                                      #")
     print("\n#-----------------------------------------------------------------------------------------------------#")
 
-    firstSequence = ["*", "D","R","Q","T","A","Q","A","A","G","T","T","T","I","T"] 
-    secondSequence = ["*", "D","R","N","T","A","Q","L","L","G","T","D","T","T"] 
+    firstSequence = ["*", "D","R","Q","T","A","Q","A","A","G","T","T","T","I","T"]
+    secondSequence = ["*", "D","R","N","T","A","Q","L","L","G","T","D","T","T"]
 
     needlemanWunsch(firstSequence, secondSequence)
 
@@ -488,14 +490,18 @@ def exercise4():
     print("\n#                          RESPOSTA EXERCÍCIO 4:                                                      #")
     print("\n#-----------------------------------------------------------------------------------------------------#")
 
-    coronavirus2 = list()
-    coronavirus1 = list() 
-    firstSequence = ["*"] + list(firstSequence)
-    secondSequence = ["*"] + list(secondSequence)
+    coronavirus1 = open("sequence_sarscov1.txt", "r")
+    coronavirus2 = open("sequence_sarscov2.txt", "r")
+
+    coronavirus1 = coronavirus1.read()
+    coronavirus2 = coronavirus2.read()
+
+    firstSequence = ["*"] + list(coronavirus2)
+    secondSequence = ["*"] + list(coronavirus1)
 
     needlemanWunsch(firstSequence, secondSequence)
 
-    print("\n#-----------------------------FIM EXERCÍCIO 3---------------------------------------------------------#")
+    print("\n#-----------------------------FIM EXERCÍCIO 4---------------------------------------------------------#")
 
 def menu():
     print("\n######################################################################")
@@ -513,6 +519,7 @@ def menu():
         exercise1()
         exercise2()
         exercise3()
+        exercise4()
     elif option == 2:
         customAlignment()
     else:
