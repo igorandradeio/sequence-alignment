@@ -399,6 +399,7 @@ def needlemanWunsch(firstSequence, secondSequence):
 
     printMatrix(firstSequence, secondSequence, scoreMatrix, tracebackMatrix)
     alignment(firstSequence, secondSequence, scoreMatrix, tracebackMatrix)
+    input("Digite enter para voltar ao menu")
 
 
 def validateSequence(sequence):
@@ -435,6 +436,7 @@ def customAlignment():
     secondSequence = ["*"] + list(secondSequence)
 
     needlemanWunsch(firstSequence, secondSequence)
+
 
 def exercise1():
     print("\n###########################################################################")
@@ -503,28 +505,53 @@ def exercise4():
 
     print("\n#-----------------------------FIM EXERCÍCIO 4---------------------------------------------------------#")
 
+def submenu ():
+    while True:
+        print("\n######################################################################")
+        print("\n#                                                                    #")
+        print("\n#                  Exercícios de Alinhamento                         #")
+        print("\n#                        SUBMENU                                     #")
+        print("\n# Opção 1 : Exercício 1                                              #")
+        print("\n# Opção 2 : Exercício 2                                              #")
+        print("\n# Opção 3 : Exercício 3                                              #")
+        print("\n# Opção 4 : Exercício 4                                              #")
+        print("\n# Opção 5 : Sair                                                     #")
+        print("\n######################################################################")
+
+        option = int(input("Digite a opção desejada: "))
+
+        if option == 1:
+            exercise1()
+        elif option == 2:
+            exercise2()
+        elif option == 3:
+            exercise3()
+        elif option == 4:
+            exercise4()
+        else:
+            return False               
+
+
 def menu():
-    print("\n######################################################################")
-    print("\n#                                                                    #")
-    print("\n#Implementação do Algoritmo de Needleman-Wunsch com Matrix BLOSUM62  #")
-    print("\n#                           MENU                                     #")
-    print("\n# Opção 1 : Resolver exercícios                                      #")
-    print("\n# Opção 2 : Alinhar própria sequência                                #")
-    print("\n# Opção 3 : Sair                                                     #")
-    print("\n######################################################################")
+    while True:
+        print("\n######################################################################")
+        print("\n#                                                                    #")
+        print("\n#Implementação do Algoritmo de Needleman-Wunsch com Matrix BLOSUM62  #")
+        print("\n#                           MENU                                     #")
+        print("\n# Opção 1 : Resolver exercícios                                      #")
+        print("\n# Opção 2 : Alinhar própria sequência                                #")
+        print("\n# Opção 3 : Sair                                                     #")
+        print("\n######################################################################")
 
-    option = int(input("Digite a opção desejada: "))
+        option = int(input("Digite a opção desejada: "))
 
-    if option == 1:
-        exercise1()
-        exercise2()
-        exercise3()
-        exercise4()
-    elif option == 2:
-        customAlignment()
-    else:
-        print("Saindo... ")
-        return False
+        if option == 1:
+            submenu()
+        elif option == 2:
+            customAlignment()
+        else: 
+            return False           
 
 
 menu()
+
